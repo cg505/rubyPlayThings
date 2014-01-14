@@ -11,12 +11,12 @@ class GameBoard
 		red = 0
 		white = 0
 		for i in 0..3
-			if (guess(i) == solution(i))
+			if (guess[i] == @solution[i])
 				red += 1
 				if (red == 4)
-					solved = true;
+					@solved = true;
 				end
-			elsif solution.include?(guess(i))
+			elsif @solution.include?(guess[i])
 				white += 1
 			end
 			i += 1
@@ -24,7 +24,7 @@ class GameBoard
 		return [guess, [red, white]]
 	end
 	def add_guess(guess_accuracy)
-		guesses << guess_accuracy
+		@guesses << guess_accuracy
 	end
 	def print_board
 		print "+----+\n"
@@ -74,7 +74,7 @@ class GameBoard
 				print "*".cyan
 			end
 		end
-		print "|"
+		print "|\n"
 		print "+----+"
 	end
 end
@@ -82,22 +82,27 @@ def play
 	`clear`
 	puts ("Mastermind\n----------\nWriten By Sam Mercier\n\n")
 	game = GameBoard.new
-	puts game
-	game.print_solution
-	cout = 0
+	count = 0
 	begin
 		game.print_board
-		print "Guess (1 = red, 2 = magenta, 3 = yellow, 4= green, 5 = blue, 6 = cyan)"
+		print "Guess (1 = red, 2 = magenta, 3 = yellow, 4= green, 5 = blue, 6 = cyan) "
 		in_guess = gets.chomp
-		guess
+		guess = []
 		for x in 0..3
 			guess[x] = in_guess[x].to_i
 			x += 1
 		end
-		proc_guess = new_guess(guess)
-		add_guess(proc_guess)
-		cout += 1
+		proc_guess = game.new_guess(guess)
+		game.add_guess(proc_guess)
+		count += 1
 	end while (!game.solved && count < 10)
+	game.print_board
+	game.print_solution
+	if game.solved
+		puts "\nGood Job You Win!\n"
+	elsif
+		puts "\nYou Loose Looser\n"
+	end
 end
 begin
 	puts ("Mastermind\n----------\nWriten By Sam Mercier\n\n")
