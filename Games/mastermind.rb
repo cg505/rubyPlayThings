@@ -10,16 +10,26 @@ class GameBoard
 	def new_guess(guess)
 		red = 0
 		white = 0
+		solution_used = [false, false, false, false]
+		guess_used = [false, false, false, false]
 		for i in 0..3
 			if (guess[i] == @solution[i])
 				red += 1
+				solution_used[i] = true
+				guess_used[i] = true
 				if (red == 4)
 					@solved = true;
 				end
-			elsif @solution.include?(guess[i])
-				white += 1
 			end
-			i += 1
+		end
+		for i in 0..3
+			for j in 0..3
+				if (guess[i] == @solution[j]) && !solution_used[j] && !guess_used[i]
+					solution_used[j] = true
+					guess_used[i] = true
+					white += 1
+				end
+			end
 		end
 		return [guess, [red, white]]
 	end
